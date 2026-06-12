@@ -1,3 +1,0 @@
-import joblib
-
-joblib.dump(knn, "wind_turbine_model.pkl")
