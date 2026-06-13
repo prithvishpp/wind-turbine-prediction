@@ -406,7 +406,7 @@ st.write(
     st.session_state.history
 )
 
-        st.subheader("Turbine Health Status")
+st.subheader("Turbine Health Status")
 
         if prediction[0] >= theoretical_power * 0.8:
 
