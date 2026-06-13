@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 import joblib
 import numpy as np
@@ -7,7 +8,11 @@ import matplotlib.pyplot as plt
 # Load Model
 model = joblib.load("wind_turbine_model.pkl")
 
-# Sidebar Navigation
+# Session State for History
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+# Sidebar
 st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
@@ -47,17 +52,18 @@ if page == "Home":
     - Improve turbine efficiency and reliability
     """)
 
-    st.subheader("Features")
     col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.metric("Total Turbines", "125")
+    with col1:
+        st.metric("Total Turbines", "125")
 
-with col2:
-    st.metric("Healthy", "110")
+    with col2:
+        st.metric("Healthy", "110")
 
-with col3:
-    st.metric("Maintenance", "15")
+    with col3:
+        st.metric("Maintenance", "15")
+
+    st.subheader("Features")
 
     st.write("""
     ✅ Power Prediction
@@ -72,15 +78,16 @@ with col3:
     """)
 
 # =========================
-# ABOUT PROJECT PAGE
+# ABOUT PROJECT
 # =========================
-if page == "About Project":
+elif page == "About Project":
 
     st.title("About Project")
 
     st.write("""
     This project uses Machine Learning to predict
-    wind turbine power generation.
+    wind turbine power generation and support
+    predictive maintenance.
 
     Input Parameters:
     • Wind Speed (m/s)
@@ -92,41 +99,33 @@ if page == "About Project":
     Output:
     • Predicted Active Power (kW)
 
-    Objective:
-    To assist operators in monitoring turbine
-    performance and identifying maintenance needs.
+    Goal:
+    Improve reliability and reduce maintenance costs.
     """)
 
 # =========================
-# MODEL INFORMATION PAGE
+# MODEL INFORMATION
 # =========================
-if page == "Model Information":
+elif page == "Model Information":
 
     st.title("Model Information")
 
-    st.write("Machine Learning Algorithm Used:")
-
-    st.success("K-Nearest Neighbors (KNN) Regression")
+    st.success("Algorithm: K-Nearest Neighbors (KNN) Regression")
 
     st.subheader("Evaluation Metrics")
 
     st.write("""
-    MSE (Mean Squared Error)
+    • Mean Squared Error (MSE)
 
-    RMSE (Root Mean Squared Error)
+    • Root Mean Squared Error (RMSE)
 
-    R² Score (Coefficient of Determination)
-    """)
-
-    st.info("""
-    These metrics are commonly used to evaluate
-    machine learning regression models.
+    • R² Score
     """)
 
 # =========================
 # ANALYTICS DASHBOARD
 # =========================
-if page == "Analytics Dashboard":
+elif page == "Analytics Dashboard":
 
     st.title("📊 Maintenance Analytics Dashboard")
 
@@ -141,8 +140,6 @@ if page == "Analytics Dashboard":
     with col3:
         st.metric("Efficiency", "92%")
 
-    st.subheader("Failure Statistics")
-
     analytics_data = pd.DataFrame({
         "Category": [
             "Healthy",
@@ -156,13 +153,14 @@ if page == "Analytics Dashboard":
         ]
     })
 
+    st.subheader("Failure Statistics")
     st.bar_chart(
         analytics_data.set_index("Category")
     )
 
-    st.subheader("Common Failure Causes")
-
     st.info("""
+    Common Failure Causes:
+
     • Blade Damage
 
     • Gearbox Wear
@@ -177,7 +175,7 @@ if page == "Analytics Dashboard":
 # =========================
 # ADMIN DASHBOARD
 # =========================
-if page == "Admin Dashboard":
+elif page == "Admin Dashboard":
 
     st.title("🔐 Admin Dashboard")
 
@@ -190,56 +188,24 @@ if page == "Admin Dashboard":
 
         st.success("Admin Access Granted")
 
-        st.subheader("System Status")
-        st.success("🟢 System Online")
-
-        st.subheader("Model Details")
-
-        st.write("Model Used: KNN Regression")
-        st.write("Deployment: Streamlit Cloud")
-        st.write("Prediction Service: Active")
-
-        st.subheader("Dataset Summary")
-
         st.metric("Records", "50,530")
         st.metric("Features", "3")
-        st.metric("Target", "LV ActivePower (kW)")
-
-        st.subheader("Maintenance Analytics")
-
-        st.info("""
-        Common Failure Causes:
-
-        • Blade Damage
-
-        • Gearbox Wear
-
-        • Generator Inefficiency
-
-        • Sensor Faults
-
-        • Electrical Problems
-        """)
-
-        st.subheader("Model Performance")
+        st.metric("Target", "LV ActivePower")
 
         st.metric("R² Score", "0.91")
         st.metric("RMSE", "410")
         st.metric("MSE", "168100")
 
-        st.subheader("Administrator Actions")
-
         st.button("Generate Maintenance Report")
         st.button("Refresh Dashboard")
 
     elif password != "":
-
         st.error("Invalid Password")
 
 # =========================
 # PREDICTION PAGE
 # =========================
-if page == "Prediction":
+elif page == "Prediction":
 
     st.title("Wind Turbine Power Prediction")
 
@@ -274,12 +240,7 @@ if page == "Prediction":
             f"Predicted Active Power: {prediction[0]:.2f} kW"
         )
 
-        # =========================
-        # POWER COMPARISON CHART
-        # =========================
-
-        st.subheader("Power Comparison")
-
+        # Chart
         chart_data = pd.DataFrame({
             "Power Type": [
                 "Theoretical",
@@ -305,142 +266,73 @@ if page == "Prediction":
 
         st.pyplot(fig)
 
-        # =========================
-# HEALTH SCORE
-# =========================
+        # Health Score
+        health_score = min(
+            (prediction[0] / max(theoretical_power, 1)) * 100,
+            100
+        )
 
-health_score = min(
-    (prediction[0] / max(theoretical_power, 1)) * 100,
-    100
-)
+        st.subheader("Turbine Health Score")
 
-st.subheader("Turbine Health Score")
+        st.progress(int(health_score))
 
-st.progress(int(health_score))
+        st.write(
+            f"Health Score: {health_score:.1f}%"
+        )
 
-st.write(
-    f"Health Score: {health_score:.1f}%"
-)
+        # Risk
+        st.subheader("Failure Risk Assessment")
 
-# =========================
-# FAILURE RISK
-# =========================
+        if prediction[0] >= theoretical_power * 0.8:
+            st.success("🟢 Low Risk")
+            cost = 0
 
-st.subheader("Failure Risk Assessment")
+        elif prediction[0] >= theoretical_power * 0.5:
+            st.warning("🟡 Medium Risk")
+            cost = 5000
 
-if prediction[0] >= theoretical_power * 0.8:
+        else:
+            st.error("🔴 High Risk")
+            cost = 25000
 
-    st.success("🟢 Low Risk")
+        # Cost
+        st.subheader("Estimated Maintenance Cost")
 
-elif prediction[0] >= theoretical_power * 0.5:
+        st.metric(
+            "Estimated Cost (₹)",
+            f"{cost:,}"
+        )
 
-    st.warning("🟡 Medium Risk")
+        # History
+        st.session_state.history.append(
+            round(float(prediction[0]), 2)
+        )
 
-else:
+        st.subheader("Prediction History")
 
-    st.error("🔴 High Risk")
+        st.write(
+            st.session_state.history
+        )
 
-# =========================
-# MAINTENANCE COST
-# =========================
+        # Turbine Health
+        st.subheader("Turbine Health Status")
 
-st.subheader("Estimated Maintenance Cost")
+        if prediction[0] >= theoretical_power * 0.8:
 
-if prediction[0] >= theoretical_power * 0.8:
+            st.success("🟢 Healthy Turbine")
 
-    cost = 0
+        elif prediction[0] >= theoretical_power * 0.5:
 
-elif prediction[0] >= theoretical_power * 0.5:
+            st.warning("🟡 Needs Inspection")
 
-    cost = 5000
+        else:
 
-else:
+            st.error("🔴 Maintenance Required")
 
-    cost = 25000
+        # Maintenance Recommendation
+        st.subheader("Maintenance Recommendation")
 
-st.metric(
-    "Estimated Cost (₹)",
-    f"{cost:,}"
-)
-
-# =========================
-# DOWNLOAD REPORT
-# =========================
-
-report = f"""
-WIND TURBINE MAINTENANCE REPORT
-
-Predicted Power: {prediction[0]:.2f} kW
-
-Wind Speed: {wind_speed}
-
-Theoretical Power: {theoretical_power}
-
-Wind Direction: {wind_direction}
-
-Health Score: {health_score:.1f}%
-
-Estimated Cost: ₹{cost:,}
-"""
-
-st.download_button(
-    "📄 Download Maintenance Report",
-    report,
-    file_name="maintenance_report.txt"
-)
-
-# =========================
-# PREDICTION HISTORY
-# =========================
-
-if "history" not in st.session_state:
-    st.session_state.history = []
-
-st.session_state.history.append(
-    round(float(prediction[0]), 2)
-)
-
-st.subheader("Prediction History")
-
-st.write(
-    st.session_state.history
-)
-
-st.subheader("Turbine Health Status")
-
-if prediction[0] >= theoretical_power * 0.8:
-
-            st.success(
-                "🟢 Healthy Turbine"
-            )
-
-            st.write(
-                "Performance is close to expected output."
-            )
-
-elif prediction[0] >= theoretical_power * 0.5:
-
-            st.warning(
-                "🟡 Needs Inspection"
-            )
-
-            st.write(
-                "Performance is below expected levels."
-            )
-
-else:
-
-            st.error(
-                "🔴 Maintenance Required"
-            )
-
-            st.write(
-                "Significant power loss detected."
-            )
-
-st.subheader("Maintenance Recommendation")
-
-if prediction[0] < theoretical_power * 0.5:
+        if prediction[0] < theoretical_power * 0.5:
 
             st.write("""
             Possible causes:
@@ -456,10 +348,29 @@ if prediction[0] < theoretical_power * 0.5:
             • Electrical faults
             """)
 
-else:
+        else:
 
             st.write("""
             No immediate maintenance action required.
 
             Continue routine monitoring.
             """)
+
+        # Download Report
+        report = f'''
+WIND TURBINE MAINTENANCE REPORT
+
+Predicted Power: {prediction[0]:.2f} kW
+Wind Speed: {wind_speed}
+Theoretical Power: {theoretical_power}
+Wind Direction: {wind_direction}
+Health Score: {health_score:.1f}%
+Estimated Cost: ₹{cost:,}
+'''
+
+        st.download_button(
+            "📄 Download Maintenance Report",
+            report,
+            file_name="maintenance_report.txt"
+        )
+```
