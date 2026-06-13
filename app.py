@@ -14,7 +14,8 @@ page = st.sidebar.radio(
         "Home",
         "About Project",
         "Model Information",
-        "Prediction"
+        "Prediction",
+        "Admin Dashboard"
     ]
 )
 
@@ -96,6 +97,68 @@ if page == "Model Information":
     These metrics are commonly used to evaluate
     machine learning regression models.
     """)
+
+# =========================
+# ADMIN DASHBOARD
+# =========================
+if page == "Admin Dashboard":
+
+    st.title("🔐 Admin Dashboard")
+
+    password = st.text_input(
+        "Enter Admin Password",
+        type="password"
+    )
+
+    if password == "admin123":
+
+        st.success("Admin Access Granted")
+
+        st.subheader("System Status")
+        st.success("🟢 System Online")
+
+        st.subheader("Model Details")
+
+        st.write("Model Used: KNN Regression")
+        st.write("Deployment: Streamlit Cloud")
+        st.write("Prediction Service: Active")
+
+        st.subheader("Dataset Summary")
+
+        st.metric("Records", "50,530")
+        st.metric("Features", "3")
+        st.metric("Target", "LV ActivePower (kW)")
+
+        st.subheader("Maintenance Analytics")
+
+        st.info("""
+        Common Failure Causes:
+
+        • Blade Damage
+
+        • Gearbox Wear
+
+        • Generator Inefficiency
+
+        • Sensor Faults
+
+        • Electrical Problems
+        """)
+
+        st.subheader("Model Performance")
+
+        st.metric("R² Score", "0.91")
+        st.metric("RMSE", "410")
+        st.metric("MSE", "168100")
+
+        st.subheader("Administrator Actions")
+
+        st.button("Generate Maintenance Report")
+        st.button("Refresh Dashboard")
+
+    elif password != "":
+
+        st.error("Invalid Password")
 
 # =========================
 # PREDICTION PAGE
@@ -189,5 +252,6 @@ if page == "Prediction":
 
             st.write("""
             No immediate maintenance action required.
+
             Continue routine monitoring.
             """)
