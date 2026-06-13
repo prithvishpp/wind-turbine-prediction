@@ -372,4 +372,3 @@ Estimated Cost: ₹{cost:,}
             report,
             file_name="maintenance_report.txt"
         )
-```
