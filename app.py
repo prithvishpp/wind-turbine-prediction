@@ -1,15 +1,18 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
 
+# Load model and dataset
 model = joblib.load("wind_turbine_model.pkl")
+df = pd.read_csv("dataset.csv")
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
     "Go to",
-    ["Home", "Prediction"]
+    ["Home", "Analytics", "Prediction"]
 )
 
 # Home Page
@@ -26,6 +29,22 @@ if page == "Home":
     - Identify potential maintenance issues
     - Visualize operational data
     """)
+
+# Analytics Page
+if page == "Analytics":
+
+    st.title("Wind Turbine Analytics")
+
+    st.subheader("Dataset Preview")
+    st.dataframe(df.head(10))
+
+    st.subheader("Dataset Shape")
+    st.write(
+        f"Rows: {df.shape[0]} | Columns: {df.shape[1]}"
+    )
+
+    st.subheader("Summary Statistics")
+    st.dataframe(df.describe())
 
 # Prediction Page
 if page == "Prediction":
@@ -50,9 +69,11 @@ if page == "Prediction":
     if st.button("Predict"):
 
         data = np.array([
-            [wind_speed,
-             theoretical_power,
-             wind_direction]
+            [
+                wind_speed,
+                theoretical_power,
+                wind_direction
+            ]
         ])
 
         prediction = model.predict(data)
