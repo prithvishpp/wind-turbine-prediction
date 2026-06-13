@@ -408,7 +408,7 @@ st.write(
 
 st.subheader("Turbine Health Status")
 
-        if prediction[0] >= theoretical_power * 0.8:
+if prediction[0] >= theoretical_power * 0.8:
 
             st.success(
                 "🟢 Healthy Turbine"
