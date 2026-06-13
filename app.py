@@ -31,7 +31,7 @@ page = st.sidebar.radio(
 # =========================
 if page == "Home":
 
-    st.title("Wind Turbine Predictive Maintenance Dashboard")
+    st.title("Wind Turbine Blade Degradation Analytics")
 
     st.image(
         "wind_turbine.jpg",
