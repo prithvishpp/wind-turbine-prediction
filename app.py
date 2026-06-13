@@ -17,6 +17,7 @@ page = st.sidebar.radio(
         "About Project",
         "Model Information",
         "Prediction",
+        "Analytics Dashboard",
         "Admin Dashboard"
     ]
 )
@@ -47,6 +48,16 @@ if page == "Home":
     """)
 
     st.subheader("Features")
+    col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("Total Turbines", "125")
+
+with col2:
+    st.metric("Healthy", "110")
+
+with col3:
+    st.metric("Maintenance", "15")
 
     st.write("""
     ✅ Power Prediction
@@ -110,6 +121,57 @@ if page == "Model Information":
     st.info("""
     These metrics are commonly used to evaluate
     machine learning regression models.
+    """)
+
+# =========================
+# ANALYTICS DASHBOARD
+# =========================
+if page == "Analytics Dashboard":
+
+    st.title("📊 Maintenance Analytics Dashboard")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Average Power", "1850 kW")
+
+    with col2:
+        st.metric("Failure Rate", "6%")
+
+    with col3:
+        st.metric("Efficiency", "92%")
+
+    st.subheader("Failure Statistics")
+
+    analytics_data = pd.DataFrame({
+        "Category": [
+            "Healthy",
+            "Inspection",
+            "Maintenance"
+        ],
+        "Count": [
+            70,
+            20,
+            10
+        ]
+    })
+
+    st.bar_chart(
+        analytics_data.set_index("Category")
+    )
+
+    st.subheader("Common Failure Causes")
+
+    st.info("""
+    • Blade Damage
+
+    • Gearbox Wear
+
+    • Generator Inefficiency
+
+    • Sensor Faults
+
+    • Electrical Problems
     """)
 
 # =========================
@@ -242,6 +304,107 @@ if page == "Prediction":
         )
 
         st.pyplot(fig)
+
+        # =========================
+# HEALTH SCORE
+# =========================
+
+health_score = min(
+    (prediction[0] / max(theoretical_power, 1)) * 100,
+    100
+)
+
+st.subheader("Turbine Health Score")
+
+st.progress(int(health_score))
+
+st.write(
+    f"Health Score: {health_score:.1f}%"
+)
+
+# =========================
+# FAILURE RISK
+# =========================
+
+st.subheader("Failure Risk Assessment")
+
+if prediction[0] >= theoretical_power * 0.8:
+
+    st.success("🟢 Low Risk")
+
+elif prediction[0] >= theoretical_power * 0.5:
+
+    st.warning("🟡 Medium Risk")
+
+else:
+
+    st.error("🔴 High Risk")
+
+# =========================
+# MAINTENANCE COST
+# =========================
+
+st.subheader("Estimated Maintenance Cost")
+
+if prediction[0] >= theoretical_power * 0.8:
+
+    cost = 0
+
+elif prediction[0] >= theoretical_power * 0.5:
+
+    cost = 5000
+
+else:
+
+    cost = 25000
+
+st.metric(
+    "Estimated Cost (₹)",
+    f"{cost:,}"
+)
+
+# =========================
+# DOWNLOAD REPORT
+# =========================
+
+report = f"""
+WIND TURBINE MAINTENANCE REPORT
+
+Predicted Power: {prediction[0]:.2f} kW
+
+Wind Speed: {wind_speed}
+
+Theoretical Power: {theoretical_power}
+
+Wind Direction: {wind_direction}
+
+Health Score: {health_score:.1f}%
+
+Estimated Cost: ₹{cost:,}
+"""
+
+st.download_button(
+    "📄 Download Maintenance Report",
+    report,
+    file_name="maintenance_report.txt"
+)
+
+# =========================
+# PREDICTION HISTORY
+# =========================
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+st.session_state.history.append(
+    round(float(prediction[0]), 2)
+)
+
+st.subheader("Prediction History")
+
+st.write(
+    st.session_state.history
+)
 
         st.subheader("Turbine Health Status")
 
