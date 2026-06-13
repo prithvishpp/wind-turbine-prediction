@@ -193,8 +193,6 @@ if page == "Prediction":
         ])
 
         prediction = model.predict(data)
-        st.write("Predicted Power:", prediction[0])
-        st.write("Maintenance Threshold:", theoretical_power * 0.5)
 
         st.success(
             f"Predicted Active Power: {prediction[0]:.2f} kW"
