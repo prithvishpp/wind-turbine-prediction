@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 
+# Load Model
 model = joblib.load("wind_turbine_model.pkl")
 
 # Sidebar Navigation
@@ -9,10 +10,17 @@ st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
     "Go to",
-    ["Home", "About Project", "Prediction"]
+    [
+        "Home",
+        "About Project",
+        "Model Information",
+        "Prediction"
+    ]
 )
 
-# Home Page
+# =========================
+# HOME PAGE
+# =========================
 if page == "Home":
 
     st.title("Wind Turbine Predictive Maintenance Dashboard")
@@ -20,36 +28,78 @@ if page == "Home":
     st.write("""
     Welcome to the Wind Turbine Predictive Maintenance Dashboard.
 
-    Features:
-    - Predict power output
-    - Analyze turbine performance
-    - Identify potential maintenance issues
-    - Visualize operational data
+    This system predicts wind turbine power output
+    and provides maintenance recommendations based
+    on turbine operating conditions.
     """)
 
-# About Project Page
+    st.subheader("Features")
+
+    st.write("""
+    ✅ Power Prediction
+
+    ✅ Turbine Health Monitoring
+
+    ✅ Maintenance Alerts
+
+    ✅ Predictive Analytics
+
+    ✅ Machine Learning Based Decision Support
+    """)
+
+# =========================
+# ABOUT PROJECT PAGE
+# =========================
 if page == "About Project":
 
     st.title("About Project")
 
     st.write("""
-    This project predicts wind turbine power output
-    using Machine Learning.
+    This project uses Machine Learning to predict
+    wind turbine power generation.
 
-    Inputs:
-    • Wind Speed
-    • Theoretical Power Curve
-    • Wind Direction
+    Input Parameters:
+    • Wind Speed (m/s)
+    • Theoretical Power Curve (KWh)
+    • Wind Direction (°)
 
     Output:
     • Predicted Active Power (kW)
 
-    Goal:
-    Help monitor turbine performance and support
-    predictive maintenance.
+    Objective:
+    To assist operators in monitoring turbine
+    performance and identifying maintenance needs.
     """)
 
-# Prediction Page
+# =========================
+# MODEL INFORMATION PAGE
+# =========================
+if page == "Model Information":
+
+    st.title("Model Information")
+
+    st.write("Machine Learning Algorithm Used:")
+
+    st.success("K-Nearest Neighbors (KNN) Regression")
+
+    st.subheader("Evaluation Metrics")
+
+    st.write("""
+    MSE (Mean Squared Error)
+
+    RMSE (Root Mean Squared Error)
+
+    R² Score (Coefficient of Determination)
+    """)
+
+    st.info("""
+    These metrics are commonly used to evaluate
+    machine learning regression models.
+    """)
+
+# =========================
+# PREDICTION PAGE
+# =========================
 if page == "Prediction":
 
     st.title("Wind Turbine Power Prediction")
@@ -72,9 +122,11 @@ if page == "Prediction":
     if st.button("Predict"):
 
         data = np.array([
-            [wind_speed,
-             theoretical_power,
-             wind_direction]
+            [
+                wind_speed,
+                theoretical_power,
+                wind_direction
+            ]
         ])
 
         prediction = model.predict(data)
@@ -83,21 +135,59 @@ if page == "Prediction":
             f"Predicted Active Power: {prediction[0]:.2f} kW"
         )
 
-        # Turbine Health Check
+        st.subheader("Turbine Health Status")
+
         if prediction[0] >= theoretical_power * 0.8:
 
             st.success(
-                "🟢 Turbine Status: Healthy"
+                "🟢 Healthy Turbine"
+            )
+
+            st.write(
+                "Performance is close to expected output."
             )
 
         elif prediction[0] >= theoretical_power * 0.5:
 
             st.warning(
-                "🟡 Turbine Status: Needs Inspection"
+                "🟡 Needs Inspection"
+            )
+
+            st.write(
+                "Performance is below expected levels."
             )
 
         else:
 
             st.error(
-                "🔴 Turbine Status: Potential Maintenance Required"
+                "🔴 Maintenance Required"
             )
+
+            st.write(
+                "Significant power loss detected."
+            )
+
+        st.subheader("Maintenance Recommendation")
+
+        if prediction[0] < theoretical_power * 0.5:
+
+            st.write("""
+            Possible causes:
+
+            • Blade degradation
+
+            • Gearbox wear
+
+            • Generator inefficiency
+
+            • Sensor malfunction
+
+            • Electrical faults
+            """)
+
+        else:
+
+            st.write("""
+            No immediate maintenance action required.
+            Continue routine monitoring.
+            """)
