@@ -1,15 +1,15 @@
 import streamlit as st
-import pandas as pd
+import joblib
+import numpy as np
 
-# Load dataset
-df = pd.read_csv("dataset.csv")
+model = joblib.load("wind_turbine_model.pkl")
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
     "Go to",
-    ["Home", "Analytics"]
+    ["Home", "Prediction"]
 )
 
 # Home Page
@@ -21,24 +21,42 @@ if page == "Home":
     Welcome to the Wind Turbine Predictive Maintenance Dashboard.
 
     Features:
-    - Dataset Analytics
-    - Root Cause Analysis
-    - Performance Monitoring
-    - Predictive Maintenance Insights
+    - Predict power output
+    - Analyze turbine performance
+    - Identify potential maintenance issues
+    - Visualize operational data
     """)
 
-# Analytics Page
-if page == "Analytics":
+# Prediction Page
+if page == "Prediction":
 
-    st.title("Wind Turbine Analytics")
+    st.title("Wind Turbine Power Prediction")
 
-    st.subheader("Dataset Preview")
-    st.dataframe(df.head(10))
-
-    st.subheader("Dataset Shape")
-    st.write(
-        f"Rows: {df.shape[0]} | Columns: {df.shape[1]}"
+    wind_speed = st.number_input(
+        "Wind Speed (m/s)",
+        value=10.0
     )
 
-    st.subheader("Summary Statistics")
-    st.dataframe(df.describe())
+    theoretical_power = st.number_input(
+        "Theoretical Power Curve (KWh)",
+        value=1000.0
+    )
+
+    wind_direction = st.number_input(
+        "Wind Direction (°)",
+        value=180.0
+    )
+
+    if st.button("Predict"):
+
+        data = np.array([
+            [wind_speed,
+             theoretical_power,
+             wind_direction]
+        ])
+
+        prediction = model.predict(data)
+
+        st.success(
+            f"Predicted Active Power: {prediction[0]:.2f} kW"
+        )
