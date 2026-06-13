@@ -9,7 +9,7 @@ st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
     "Go to",
-    ["Home", "Prediction"]
+    ["Home", "About Project", "Prediction"]
 )
 
 # Home Page
@@ -25,6 +25,28 @@ if page == "Home":
     - Analyze turbine performance
     - Identify potential maintenance issues
     - Visualize operational data
+    """)
+
+# About Project Page
+if page == "About Project":
+
+    st.title("About Project")
+
+    st.write("""
+    This project predicts wind turbine power output
+    using Machine Learning.
+
+    Inputs:
+    • Wind Speed
+    • Theoretical Power Curve
+    • Wind Direction
+
+    Output:
+    • Predicted Active Power (kW)
+
+    Goal:
+    Help monitor turbine performance and support
+    predictive maintenance.
     """)
 
 # Prediction Page
