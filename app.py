@@ -1,6 +1,8 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # Load Model
 model = joblib.load("wind_turbine_model.pkl")
@@ -26,12 +28,22 @@ if page == "Home":
 
     st.title("Wind Turbine Predictive Maintenance Dashboard")
 
-    st.write("""
-    Welcome to the Wind Turbine Predictive Maintenance Dashboard.
+    st.image(
+        "wind_turbine.jpg",
+        caption="Wind Turbine Predictive Maintenance System",
+        use_container_width=True
+    )
 
-    This system predicts wind turbine power output
-    and provides maintenance recommendations based
-    on turbine operating conditions.
+    st.markdown("""
+    ### Welcome
+
+    This dashboard uses Machine Learning to:
+
+    - Predict wind turbine power output
+    - Monitor turbine health
+    - Detect maintenance requirements
+    - Support predictive maintenance decisions
+    - Improve turbine efficiency and reliability
     """)
 
     st.subheader("Features")
@@ -61,7 +73,9 @@ if page == "About Project":
 
     Input Parameters:
     • Wind Speed (m/s)
+
     • Theoretical Power Curve (KWh)
+
     • Wind Direction (°)
 
     Output:
@@ -197,6 +211,37 @@ if page == "Prediction":
         st.success(
             f"Predicted Active Power: {prediction[0]:.2f} kW"
         )
+
+        # =========================
+        # POWER COMPARISON CHART
+        # =========================
+
+        st.subheader("Power Comparison")
+
+        chart_data = pd.DataFrame({
+            "Power Type": [
+                "Theoretical",
+                "Predicted"
+            ],
+            "Power (kW)": [
+                theoretical_power,
+                prediction[0]
+            ]
+        })
+
+        fig, ax = plt.subplots()
+
+        ax.bar(
+            chart_data["Power Type"],
+            chart_data["Power (kW)"]
+        )
+
+        ax.set_ylabel("Power (kW)")
+        ax.set_title(
+            "Theoretical vs Predicted Power"
+        )
+
+        st.pyplot(fig)
 
         st.subheader("Turbine Health Status")
 
