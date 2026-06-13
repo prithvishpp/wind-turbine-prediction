@@ -21,6 +21,7 @@ page = st.sidebar.radio(
         "About Project",
         "Model Information",
         "Prediction",
+        "Degradation Analysis",
         "Analytics Dashboard",
         "Admin Dashboard"
     ]
@@ -120,6 +121,118 @@ elif page == "Model Information":
 
     • R² Score
     """)
+
+# =========================
+# DEGRADATION ANALYSIS
+# =========================
+elif page == "Degradation Analysis":
+
+    st.title("🔧 Wind Turbine Blade Degradation Analysis")
+
+    turbine_age = st.slider(
+        "Turbine Age (Years)",
+        1,
+        25,
+        10
+    )
+
+    vibration_level = st.slider(
+        "Vibration Level",
+        0,
+        100,
+        50
+    )
+
+    efficiency = st.slider(
+        "Current Efficiency (%)",
+        0,
+        100,
+        80
+    )
+
+    degradation_score = (
+        turbine_age * 2 +
+        vibration_level * 0.4 +
+        (100 - efficiency) * 0.6
+    )
+
+    st.subheader("Degradation Score")
+
+    st.progress(
+        min(int(degradation_score), 100)
+    )
+
+    st.write(
+        f"Degradation Score: {degradation_score:.1f}/100"
+    )
+
+    if degradation_score < 35:
+
+        st.success(
+            "🟢 Low Degradation"
+        )
+
+        st.write(
+            "Blade condition is healthy."
+        )
+
+    elif degradation_score < 70:
+
+        st.warning(
+            "🟡 Moderate Degradation"
+        )
+
+        st.write(
+            "Inspection recommended."
+        )
+
+    else:
+
+        st.error(
+            "🔴 Severe Degradation"
+        )
+
+        st.write(
+            "Maintenance required."
+        )
+
+    st.subheader("Estimated Remaining Life")
+
+    remaining_life = max(
+        25 - turbine_age,
+        0
+    )
+
+    st.metric(
+        "Remaining Life",
+        f"{remaining_life} Years"
+    )
+
+    st.subheader("Recommended Actions")
+
+    if degradation_score >= 70:
+
+        st.write("""
+        • Inspect turbine blades
+
+        • Check gearbox wear
+
+        • Verify sensor accuracy
+
+        • Schedule preventive maintenance
+
+        • Replace damaged components
+        """)
+
+    else:
+
+        st.write("""
+        • Continue routine monitoring
+
+        • Schedule periodic inspections
+
+        • Maintain lubrication systems
+        """)
 
 # =========================
 # ANALYTICS DASHBOARD
