@@ -438,7 +438,7 @@ else:
                 "Significant power loss detected."
             )
 
-        st.subheader("Maintenance Recommendation")
+st.subheader("Maintenance Recommendation")
 
 if prediction[0] < theoretical_power * 0.5:
 
