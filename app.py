@@ -82,3 +82,22 @@ if page == "Prediction":
         st.success(
             f"Predicted Active Power: {prediction[0]:.2f} kW"
         )
+
+        # Turbine Health Check
+        if prediction[0] >= theoretical_power * 0.8:
+
+            st.success(
+                "🟢 Turbine Status: Healthy"
+            )
+
+        elif prediction[0] >= theoretical_power * 0.5:
+
+            st.warning(
+                "🟡 Turbine Status: Needs Inspection"
+            )
+
+        else:
+
+            st.error(
+                "🔴 Turbine Status: Potential Maintenance Required"
+            )
