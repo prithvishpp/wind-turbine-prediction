@@ -418,7 +418,7 @@ if prediction[0] >= theoretical_power * 0.8:
                 "Performance is close to expected output."
             )
 
-        elif prediction[0] >= theoretical_power * 0.5:
+elif prediction[0] >= theoretical_power * 0.5:
 
             st.warning(
                 "🟡 Needs Inspection"
@@ -428,7 +428,7 @@ if prediction[0] >= theoretical_power * 0.8:
                 "Performance is below expected levels."
             )
 
-        else:
+else:
 
             st.error(
                 "🔴 Maintenance Required"
@@ -440,7 +440,7 @@ if prediction[0] >= theoretical_power * 0.8:
 
         st.subheader("Maintenance Recommendation")
 
-        if prediction[0] < theoretical_power * 0.5:
+if prediction[0] < theoretical_power * 0.5:
 
             st.write("""
             Possible causes:
@@ -456,7 +456,7 @@ if prediction[0] >= theoretical_power * 0.8:
             • Electrical faults
             """)
 
-        else:
+else:
 
             st.write("""
             No immediate maintenance action required.
