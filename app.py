@@ -22,6 +22,7 @@ page = st.sidebar.radio(
         "Model Information",
         "Prediction",
         "Degradation Analysis",
+        "Weather Impact Analysis",
         "Analytics Dashboard",
         "Admin Dashboard"
     ]
@@ -233,7 +234,159 @@ elif page == "Degradation Analysis":
 
         • Maintain lubrication systems
         """)
+# =========================
+# WEATHER IMPACT ANALYSIS
+# =========================
+elif page == "Weather Impact Analysis":
 
+    st.title("🌦️ Weather Impact Analysis")
+
+    st.write("""
+    Analyze how environmental conditions
+    affect wind turbine performance.
+    """)
+
+    temperature = st.slider(
+        "Temperature (°C)",
+        0,
+        50,
+        25
+    )
+
+    humidity = st.slider(
+        "Humidity (%)",
+        0,
+        100,
+        50
+    )
+
+    wind_gust = st.slider(
+        "Wind Gust Speed (m/s)",
+        0,
+        40,
+        15
+    )
+
+    st.subheader("Weather Conditions")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "Temperature",
+            f"{temperature} °C"
+        )
+
+    with col2:
+        st.metric(
+            "Humidity",
+            f"{humidity}%"
+        )
+
+    with col3:
+        st.metric(
+            "Wind Gust",
+            f"{wind_gust} m/s"
+        )
+
+    # Impact Score
+    impact_score = (
+        abs(temperature - 25) * 0.5
+        + humidity * 0.2
+        + wind_gust * 1.5
+    )
+
+    st.subheader("Weather Impact Score")
+
+    st.progress(
+        min(int(impact_score), 100)
+    )
+
+    st.write(
+        f"Impact Score: {impact_score:.1f}/100"
+    )
+
+    if impact_score < 30:
+
+        st.success(
+            "🟢 Favorable Conditions"
+        )
+
+        st.write(
+            "Weather conditions support efficient power generation."
+        )
+
+    elif impact_score < 60:
+
+        st.warning(
+            "🟡 Moderate Impact"
+        )
+
+        st.write(
+            "Weather may slightly affect turbine performance."
+        )
+
+    else:
+
+        st.error(
+            "🔴 High Weather Impact"
+        )
+
+        st.write(
+            "Weather conditions may reduce efficiency and increase wear."
+        )
+
+    # Weather Trend Chart
+    st.subheader("Weekly Weather Trend")
+
+    weather_data = pd.DataFrame({
+        "Day": [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun"
+        ],
+        "Wind Speed": [
+            12,
+            14,
+            11,
+            16,
+            18,
+            15,
+            13
+        ]
+    })
+
+    st.line_chart(
+        weather_data.set_index("Day")
+    )
+
+    st.subheader("Recommendations")
+
+    if impact_score >= 60:
+
+        st.write("""
+        • Inspect turbine blades
+
+        • Monitor vibration levels
+
+        • Schedule preventive maintenance
+
+        • Check gearbox condition
+        """)
+
+    else:
+
+        st.write("""
+        • Continue routine operation
+
+        • Monitor weather forecasts
+
+        • Maintain regular inspections
+        """)
 # =========================
 # ANALYTICS DASHBOARD
 # =========================
