@@ -33,20 +33,7 @@ page = st.sidebar.radio(
 # =========================
 if page == "Home":
 
-    st.markdown("""
-<div style="
-padding:25px;
-border-radius:15px;
-background:linear-gradient(90deg,#1f2937,#111827);
-text-align:center;
-">
-
-<h1>⚡ Wind Turbine Blade Degradation Analytics</h1>
-
-<h3>AI Powered Predictive Maintenance & Performance Monitoring</h3>
-
-</div>
-""", unsafe_allow_html=True)
+    st.title("Wind Turbine Blade Degradation Analytics")
 
     st.image(
         "wind_turbine.jpg",
