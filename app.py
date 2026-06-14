@@ -23,16 +23,12 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Sidebar
+st.sidebar.image(
+    "wind_turbine.jpg",
+    use_container_width=True
+)
+
 st.sidebar.title("⚡ WT Analytics")
-
-st.sidebar.markdown("---")
-
-st.sidebar.info("""
-Wind Turbine Predictive
-Maintenance System
-
-Machine Learning Dashboard
-""")
 
 page = st.sidebar.radio(
     "Go to",
