@@ -23,7 +23,16 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Sidebar
-st.sidebar.title("Navigation")
+st.sidebar.title("⚡ WT Analytics")
+
+st.sidebar.markdown("---")
+
+st.sidebar.info("""
+Wind Turbine Predictive
+Maintenance System
+
+Machine Learning Dashboard
+""")
 
 page = st.sidebar.radio(
     "Go to",
