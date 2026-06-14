@@ -442,7 +442,7 @@ elif page == "Analytics Dashboard":
 # =========================
 elif page == "Admin Dashboard":
 
-    if password == "admin123":
+if password == "admin123":
 
     st.success("Admin Access Granted")
 
