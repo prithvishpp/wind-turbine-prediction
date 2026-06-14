@@ -10,11 +10,11 @@ st.markdown("""
 <style>
 
 .main {
-    background-color: #f8fafc;
+    background-color: #black;
 }
 
 h1 {
-    color: #0f4c81;
+    color: #black;
 }
 
 [data-testid="stMetricValue"] {
