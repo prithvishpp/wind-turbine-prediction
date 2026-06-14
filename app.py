@@ -53,16 +53,6 @@ if page == "Home":
     - Improve turbine efficiency and reliability
     """)
 
-    st.info("""
-🚀 Prediction Engine: Active
-
-⚡ Analytics Dashboard: Online
-
-🔧 Maintenance Monitor: Running
-
-📊 Health Assessment System: Active
-""")
-
     col1, col2, col3 = st.columns(3)
 
     with col1:
