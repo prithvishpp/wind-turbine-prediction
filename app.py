@@ -442,252 +442,30 @@ elif page == "Analytics Dashboard":
 # =========================
 elif page == "Admin Dashboard":
 
-if password == "admin123":
+    st.title("🔐 Admin Dashboard")
 
-    st.success("Admin Access Granted")
-
-    # =========================
-    # CONTROL CENTER METRICS
-    # =========================
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric(
-            "🌪 Active Turbines",
-            "125"
-        )
-
-    with col2:
-        st.metric(
-            "🟢 Online",
-            "118"
-        )
-
-    with col3:
-        st.metric(
-            "🔴 Offline",
-            "7"
-        )
-
-    # =========================
-    # SYSTEM STATUS
-    # =========================
-
-    st.subheader("System Status")
-
-    st.success("🟢 Prediction Engine Online")
-
-    st.success("🟢 Analytics Dashboard Active")
-
-    st.success("🟢 Maintenance Monitor Running")
-
-    st.success("🟢 Database Connected")
-
-    # =========================
-    # DATASET SUMMARY
-    # =========================
-
-    st.subheader("Dataset Summary")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric(
-            "Records",
-            "50,530"
-        )
-
-    with col2:
-        st.metric(
-            "Features",
-            "3"
-        )
-
-    with col3:
-        st.metric(
-            "Target",
-            "LV ActivePower"
-        )
-
-    # =========================
-    # MODEL PERFORMANCE
-    # =========================
-
-    st.subheader("Model Performance")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric(
-            "R² Score",
-            "0.91"
-        )
-
-    with col2:
-        st.metric(
-            "RMSE",
-            "410"
-        )
-
-    with col3:
-        st.metric(
-            "MSE",
-            "168100"
-        )
-
-    # =========================
-    # ACTIVE ALERTS
-    # =========================
-
-    st.subheader("🚨 Active Alerts")
-
-    st.warning(
-        "⚠ WT-102: Blade Inspection Required"
+    password = st.text_input(
+        "Enter Admin Password",
+        type="password"
     )
 
-    st.error(
-        "🚨 WT-115: Gearbox Maintenance Required"
-    )
+    if password == "admin123":
 
-    st.info(
-        "ℹ WT-108: Scheduled Maintenance Due"
-    )
+        st.success("Admin Access Granted")
 
-    # =========================
-    # HEALTH DISTRIBUTION
-    # =========================
+        st.metric("Records", "50,530")
+        st.metric("Features", "3")
+        st.metric("Target", "LV ActivePower")
 
-    st.subheader("Turbine Health Distribution")
+        st.metric("R² Score", "0.91")
+        st.metric("RMSE", "410")
+        st.metric("MSE", "168100")
 
-    health_data = pd.DataFrame({
-        "Status": [
-            "Healthy",
-            "Inspection",
-            "Maintenance"
-        ],
-        "Count": [
-            95,
-            20,
-            10
-        ]
-    })
+        st.button("Generate Maintenance Report")
+        st.button("Refresh Dashboard")
 
-    st.bar_chart(
-        health_data.set_index("Status")
-    )
-
-    # =========================
-    # DAILY POWER PRODUCTION
-    # =========================
-
-    st.subheader("Daily Power Production")
-
-    power_data = pd.DataFrame({
-        "Day": [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun"
-        ],
-        "Power": [
-            1800,
-            1950,
-            2000,
-            1850,
-            2100,
-            2050,
-            2200
-        ]
-    })
-
-    st.line_chart(
-        power_data.set_index("Day")
-    )
-
-    # =========================
-    # MAINTENANCE SCHEDULE
-    # =========================
-
-    st.subheader("Upcoming Maintenance")
-
-    maintenance_data = pd.DataFrame({
-        "Turbine": [
-            "WT-102",
-            "WT-108",
-            "WT-115"
-        ],
-        "Date": [
-            "2026-07-10",
-            "2026-07-15",
-            "2026-07-22"
-        ],
-        "Task": [
-            "Blade Inspection",
-            "Sensor Calibration",
-            "Gearbox Maintenance"
-        ]
-    })
-
-    st.dataframe(
-        maintenance_data,
-        use_container_width=True
-    )
-
-    # =========================
-    # RECENT ACTIVITY
-    # =========================
-
-    st.subheader("Recent Admin Activity")
-
-    activity_data = pd.DataFrame({
-        "Time": [
-            "09:15",
-            "10:30",
-            "12:45",
-            "14:20"
-        ],
-        "Action": [
-            "Dashboard Login",
-            "Health Check Run",
-            "Report Generated",
-            "Alerts Sent"
-        ]
-    })
-
-    st.dataframe(
-        activity_data,
-        use_container_width=True
-    )
-
-    # =========================
-    # ADMIN ACTIONS
-    # =========================
-
-    st.subheader("Administrator Actions")
-
-    if st.button("Generate Maintenance Report"):
-        st.success(
-            "Report Generated Successfully"
-        )
-
-    if st.button("Run Health Check"):
-        st.success(
-            "All Turbines Scanned"
-        )
-
-    if st.button("Send Maintenance Alerts"):
-        st.success(
-            "Alerts Sent Successfully"
-        )
-
-    if st.button("Refresh Dashboard"):
-        st.success(
-            "Dashboard Refreshed"
-        )
+    elif password != "":
+        st.error("Invalid Password")
 
 # =========================
 # PREDICTION PAGE
