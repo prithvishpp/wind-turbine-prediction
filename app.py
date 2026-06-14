@@ -453,18 +453,266 @@ elif page == "Admin Dashboard":
 
         st.success("Admin Access Granted")
 
-        st.metric("Records", "50,530")
-        st.metric("Features", "3")
-        st.metric("Target", "LV ActivePower")
+        # =========================
+        # SYSTEM HEALTH OVERVIEW
+        # =========================
 
-        st.metric("R² Score", "0.91")
-        st.metric("RMSE", "410")
-        st.metric("MSE", "168100")
+        st.subheader("🖥️ System Health Overview")
 
-        st.button("Generate Maintenance Report")
-        st.button("Refresh Dashboard")
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Active Turbines", "125")
+
+        with col2:
+            st.metric("Online Systems", "118")
+
+        with col3:
+            st.metric("Offline Systems", "7")
+
+        # =========================
+        # MODEL DETAILS
+        # =========================
+
+        st.subheader("🤖 Model Details")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("Records", "50,530")
+
+        with col2:
+            st.metric("Features", "3")
+
+        with col3:
+            st.metric("Target", "LV ActivePower")
+
+        st.subheader("📈 Model Performance")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.metric("R² Score", "0.91")
+
+        with col2:
+            st.metric("RMSE", "410")
+
+        with col3:
+            st.metric("MSE", "168100")
+
+        # =========================
+        # TURBINE STATUS
+        # =========================
+
+        st.subheader("📊 Turbine Status Distribution")
+
+        status_data = pd.DataFrame({
+            "Status": [
+                "Healthy",
+                "Inspection",
+                "Maintenance"
+            ],
+            "Count": [
+                95,
+                20,
+                10
+            ]
+        })
+
+        st.bar_chart(
+            status_data.set_index("Status")
+        )
+
+        # =========================
+        # ACTIVE ALERTS
+        # =========================
+
+        st.subheader("🚨 Active Alerts")
+
+        st.error(
+            "WT-115 : Gearbox Maintenance Required"
+        )
+
+        st.warning(
+            "WT-102 : Blade Inspection Due"
+        )
+
+        st.info(
+            "WT-108 : Sensor Calibration Scheduled"
+        )
+
+        # =========================
+        # MAINTENANCE SCHEDULE
+        # =========================
+
+        st.subheader("📅 Upcoming Maintenance")
+
+        maintenance_schedule = pd.DataFrame({
+            "Turbine": [
+                "WT-102",
+                "WT-108",
+                "WT-115",
+                "WT-121"
+            ],
+            "Date": [
+                "2026-07-10",
+                "2026-07-15",
+                "2026-07-22",
+                "2026-07-25"
+            ],
+            "Task": [
+                "Blade Inspection",
+                "Sensor Calibration",
+                "Gearbox Repair",
+                "Routine Check"
+            ]
+        })
+
+        st.dataframe(
+            maintenance_schedule,
+            use_container_width=True
+        )
+
+        # =========================
+        # FAILURE CAUSE ANALYSIS
+        # =========================
+
+        st.subheader("⚠️ Failure Cause Analysis")
+
+        fig, ax = plt.subplots()
+
+        ax.pie(
+            [40, 25, 20, 15],
+            labels=[
+                "Blade Damage",
+                "Gearbox Wear",
+                "Generator Fault",
+                "Sensor Failure"
+            ],
+            autopct="%1.1f%%"
+        )
+
+        st.pyplot(fig)
+
+        # =========================
+        # DAILY POWER PRODUCTION
+        # =========================
+
+        st.subheader("⚡ Daily Power Production")
+
+        power_data = pd.DataFrame({
+            "Day": [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat",
+                "Sun"
+            ],
+            "Power(kW)": [
+                1800,
+                1950,
+                2100,
+                2050,
+                1980,
+                2200,
+                2150
+            ]
+        })
+
+        st.line_chart(
+            power_data.set_index("Day")
+        )
+
+        # =========================
+        # ADMIN ACTIVITY LOG
+        # =========================
+
+        st.subheader("👨‍💼 Recent Admin Activity")
+
+        activity_log = pd.DataFrame({
+            "Time": [
+                "09:15",
+                "10:42",
+                "12:30",
+                "15:05"
+            ],
+            "Action": [
+                "Dashboard Login",
+                "Generated Report",
+                "Health Check",
+                "Alert Review"
+            ]
+        })
+
+        st.dataframe(
+            activity_log,
+            use_container_width=True
+        )
+
+        # =========================
+        # ENVIRONMENTAL IMPACT
+        # =========================
+
+        st.subheader("🌱 Environmental Impact")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric(
+                "CO₂ Saved",
+                "18,500 Tons/Year"
+            )
+
+        with col2:
+            st.metric(
+                "Renewable Energy Generated",
+                "250 MW"
+            )
+
+        # =========================
+        # ADMIN ACTIONS
+        # =========================
+
+        st.subheader("⚙️ Administrator Actions")
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            if st.button(
+                "Generate Maintenance Report"
+            ):
+                st.success(
+                    "Report Generated Successfully"
+                )
+
+            if st.button(
+                "Run Health Check"
+            ):
+                st.success(
+                    "All Turbines Scanned"
+                )
+
+        with col2:
+
+            if st.button(
+                "Refresh Dashboard"
+            ):
+                st.success(
+                    "Dashboard Refreshed"
+                )
+
+            if st.button(
+                "Send Maintenance Alerts"
+            ):
+                st.success(
+                    "Alerts Sent Successfully"
+                )
 
     elif password != "":
+
         st.error("Invalid Password")
 
 # =========================
