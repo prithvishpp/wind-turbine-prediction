@@ -10,11 +10,11 @@ st.markdown("""
 <style>
 
 .stApp {
-    background: linear-gradient(
-        to bottom,
-        #87CEEB 0%,
-        #B0E0E6 40%,
-        #E0FFFF 100%
+    background: radial-gradient(
+        circle at top left,
+        #dbeafe,
+        #eff6ff,
+        #f8fafc
     );
 }
 
