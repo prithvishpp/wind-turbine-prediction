@@ -1,4 +1,26 @@
 import streamlit as st
+
+st.set_page_config(
+    page_title="Wind Turbine Analytics",
+    page_icon="⚡",
+    layout="wide"
+)
+
+st.markdown("""
+<style>
+
+.stApp {
+    background: linear-gradient(
+        to bottom,
+        #87CEEB 0%,
+        #B0E0E6 40%,
+        #E0FFFF 100%
+    );
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 import joblib
 import numpy as np
 import pandas as pd
