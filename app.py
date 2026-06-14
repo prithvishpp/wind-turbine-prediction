@@ -6,10 +6,28 @@ st.set_page_config(
     layout="wide"
 )
 
-import joblib
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+st.markdown("""
+<style>
+
+.main {
+    background-color: #f8fafc;
+}
+
+h1 {
+    color: #0f4c81;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 28px;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #eef4ff;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 import joblib
 import numpy as np
 import pandas as pd
