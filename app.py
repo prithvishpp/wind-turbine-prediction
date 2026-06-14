@@ -1,33 +1,4 @@
 import streamlit as st
-
-st.set_page_config(
-    page_title="Wind Turbine Analytics",
-    page_icon="⚡",
-    layout="wide"
-)
-
-st.markdown("""
-<style>
-
-.main {
-    background-color: #black;
-}
-
-h1 {
-    color: #black;
-}
-
-[data-testid="stMetricValue"] {
-    font-size: 28px;
-}
-
-[data-testid="stSidebar"] {
-    background-color: #eef4ff;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
 import joblib
 import numpy as np
 import pandas as pd
